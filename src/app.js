@@ -1,10 +1,20 @@
 const express = require('express');
+const prisma = require('./config/prisma');
 
 const app = express();
 app.use(express.json());
 
 app.get('/', (req, res) => {
   res.json({ message: 'E-commerce Monolithic API is running' });
+});
+
+app.get('/health', async (req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: 'ok', database: 'connected', uptime: process.uptime() });
+  } catch (err) {
+    res.status(503).json({ status: 'error', database: 'disconnected' });
+  }
 });
 
 // Các route sẽ được gắn ở các bước sau:
