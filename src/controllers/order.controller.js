@@ -1,9 +1,14 @@
 const orderService = require('../services/order.service');
+const { toVNTime } = require('../utils/time');
+
+function formatOrder(order) {
+  return { ...order, createat: toVNTime(order.createat) };
+}
 
 async function create(req, res) {
   try {
     const order = await orderService.createOrder(req.user.uid, req.body && req.body.items);
-    res.status(201).json({ message: 'Đặt hàng thành công', order });
+    res.status(201).json({ message: 'Đặt hàng thành công', order: formatOrder(order) });
   } catch (err) {
     res.status(err.status || 500).json({ error: err.message });
   }
@@ -14,7 +19,7 @@ async function getById(req, res) {
   if (!Number.isInteger(oid)) return res.status(400).json({ error: 'oid không hợp lệ' });
   try {
     const order = await orderService.getOrder(oid, req.user);
-    res.json({ order });
+    res.json({ order: formatOrder(order) });
   } catch (err) {
     res.status(err.status || 500).json({ error: err.message });
   }
