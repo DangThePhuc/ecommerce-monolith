@@ -11,6 +11,8 @@ model Role {
   roleid   Int    @id @default(autoincrement())
   rolename String @unique @db.VarChar(50)
   users    User[]
+
+  @@map("role")
 }
 
 model MemberShip {
@@ -18,6 +20,8 @@ model MemberShip {
   mname String @db.VarChar(50)
   score Int
   users User[]
+
+  @@map("membership")
 }
 
 model User {
@@ -30,6 +34,8 @@ model User {
   role       Role       @relation(fields: [roleid], references: [roleid])
   membership MemberShip @relation(fields: [mid], references: [mid])
   orders     Order[]
+
+  @@map("users")
 }
 
 model Product {
@@ -38,6 +44,8 @@ model Product {
   price        Decimal       @db.Decimal(10, 2)
   quantity     Int
   orderDetails OrderDetail[]
+
+  @@map("product")
 }
 
 model Order {
@@ -47,6 +55,8 @@ model Order {
   user      User          @relation(fields: [uid], references: [uid])
   details   OrderDetail[]
   shipments Shipment[]
+
+  @@map("orders")
 }
 
 model OrderDetail {
@@ -58,6 +68,7 @@ model OrderDetail {
   product    Product @relation(fields: [pid], references: [pid])
 
   @@id([oid, pid])
+  @@map("order_detail")
 }
 
 model Shipment {
@@ -65,4 +76,6 @@ model Shipment {
   oid    Int
   status String @db.VarChar(50)
   order  Order  @relation(fields: [oid], references: [oid])
+
+  @@map("shipment")
 }
