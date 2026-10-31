@@ -82,4 +82,12 @@ async function getShipment(oid, user) {
   return order.shipments;
 }
 
-module.exports = { createOrder, getOrder, getShipment };
+async function getMyOrders(uid) {
+  return prisma.order.findMany({
+    where: { uid },
+    orderBy: { createat: 'desc' },
+    include: { details: { include: { product: true } }, shipments: true },
+  });
+}
+
+module.exports = { createOrder, getOrder, getShipment, getMyOrders };

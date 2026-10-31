@@ -5,6 +5,7 @@ const authenticate = require('../middlewares/auth');
 router.use(authenticate); // mọi route đơn hàng đều cần token
 
 router.post('/', orderController.create);
+router.get('/', orderController.listMine);
 router.get('/:oid', orderController.getById);
 router.get('/:oid/shipment', orderController.getShipment);
 

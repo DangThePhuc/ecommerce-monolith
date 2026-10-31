@@ -12,6 +12,6 @@ RUN npx prisma generate
 
 COPY src ./src
 
-EXPOSE 3000
+EXPOSE 3002
 
 CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed && node src/server.js"]

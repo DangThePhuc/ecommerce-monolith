@@ -36,4 +36,13 @@ async function getShipment(req, res) {
   }
 }
 
-module.exports = { create, getById, getShipment };
+async function listMine(req, res) {
+  try {
+    const orders = await orderService.getMyOrders(req.user.uid);
+    res.json({ total: orders.length, orders: orders.map(formatOrder) });
+  } catch (err) {
+    res.status(err.status || 500).json({ error: err.message });
+  }
+}
+
+module.exports = { create, getById, getShipment, listMine };
